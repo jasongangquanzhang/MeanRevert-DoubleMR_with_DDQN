@@ -75,15 +75,7 @@ class DMR_env:
             S[:, t + 1], I[:, t + 1], _ = self.step(
                 t * self.dt, S[:, t], I[:, t], 0 * I[:, t]
             )
-
-        # Plot the simulated S for the first sample in the mini-batch
-        plt.plot(self.t.numpy(), S[0].numpy())
-        plt.xlabel("Time")
-        plt.ylabel("S")
-        plt.title("Simulated S over Time")
-        plt.show()
-
-        pass
+        return S, I
 
     def step(self, t, S, I, I_p):
         """
