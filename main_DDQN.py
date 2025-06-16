@@ -11,7 +11,7 @@ from DDQN import DDQN
 env = MR_env(S_0=1, kappa=1, sigma=0.2, theta=1,
              dt=0.25, T = int(20), 
              I_max=10, lambd=0.05)
-denv = DMR_env(S_0=1, kappa=1, sigma=0.2, theta_a=0.8, theta_b=1.2,
+denv = DMR_env(S_0=1, kappa=1, sigma=0.2, theta_a=0.5, theta_b=1.5,
                 dt=0.25, T = int(20), 
                 I_max=10, lambd=0.05)
 

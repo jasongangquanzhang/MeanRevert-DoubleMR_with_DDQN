@@ -9,7 +9,7 @@ import numpy as np
 from tqdm import tqdm 
 import pdb
 import torch
-
+import matplotlib.pyplot as plt
 #
 # dS_t = \kappa ( \theta - S_t) dt + \sigma dW_t
 #
@@ -51,19 +51,19 @@ class MR_env():
         
         return S0, I0
 # not even used in the code
-    # def Simulate(self,  mini_batch_size=10):
+    def Simulate(self,  mini_batch_size=10):
+        print(self.kappa, self.theta, self.sigma, self.lambd)
+        S = torch.zeros((mini_batch_size, self.N)).float()
+        I = torch.zeros((mini_batch_size, self.N)).float()
 
-    #     S = torch.zeros((mini_batch_size, self.N)).float()
-    #     I = torch.zeros((mini_batch_size, self.N)).float()
+        S[:, 0] = self.S_0
+        I[:, 0] = 0
 
-    #     S[:, 0] = self.S_0
-    #     I[:, 0] = 0
+        for t in tqdm(range(self.N-1)):
 
-    #     for t in tqdm(range(self.N-1)):
-
-    #         S[:, t+1], I[:,t+1], _ = self.step(t*self.dt, S[:,t], I[:,t], 0*I[:,t])
-
-    #     return S, I
+            S[:, t+1], I[:,t+1], _ = self.step(t*self.dt, S[:,t], I[:,t], 0*I[:,t])
+        
+        return S, I
     
     def step(self, t, S, I, I_p):
         """
