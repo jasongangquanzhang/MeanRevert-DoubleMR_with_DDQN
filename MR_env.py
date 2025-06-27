@@ -7,7 +7,6 @@ Created on Fri Dec 30 11:41:23 2022
 
 import numpy as np
 from tqdm import tqdm 
-import pdb
 import torch
 
 #
@@ -24,22 +23,22 @@ class MR_env():
                  I_max = 10,
                  lambd = 0.02):
         
-        self.S_0 = S_0
-        self.theta = theta
-        self.sigma = sigma
-        self.kappa = kappa
-        self.lambd = lambd
+        self.S_0 = S_0 # initial stock price
+        self.theta = theta # long term mean of the stock price
+        self.sigma = sigma # volatility of the stock price
+        self.kappa = kappa # strength of mean reversion
+        self.lambd = lambd # cost of trading
         
-        self.dt = dt  # time steps
-        self.T = T
-        self.N = int(self.T/self.dt)+1
+        self.dt = dt  # time step size
+        self.T = T # total time of the simulation (terminal time)
+        self.N = int(self.T/self.dt)+1 # number of time steps
         
         self.t = torch.linspace(0, self.T, self.N)
         
         self.inv_vol = self.sigma/np.sqrt(2.0*self.kappa)
         self.eff_vol = self.sigma* np.sqrt((1-np.exp(-2*self.kappa*self.dt))/(2*self.kappa))
         
-        self.I_max = I_max
+        self.I_max = I_max # maximum inventory level
         
     def lognormal(self, sigma, mini_batch_size=10):
         return torch.exp(-0.5*sigma**2 + sigma*torch.randn(mini_batch_size))
@@ -48,7 +47,6 @@ class MR_env():
         
         S0 = self.S_0 + 3*self.inv_vol*torch.randn(mini_batch_size)
         I0 = self.I_max * (2*torch.rand(mini_batch_size)-1)
-        
         return S0, I0
 
     def Simulate(self,  mini_batch_size=10):
@@ -91,8 +89,6 @@ class MR_env():
             DESCRIPTION.
 
         """
-        
-        
         mini_batch_size = S.shape[0]
 
         # dS_t = \kappa ( \theta - S_t) dt + \sigma dW_t        
